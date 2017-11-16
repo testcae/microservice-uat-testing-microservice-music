@@ -122,10 +122,10 @@ public class uatMusicTest {
     MiniClient c = new MiniClient();
     c.setAddressPort(HTTP_ADDRESS, HTTP_PORT);
     try {
-      JSONObject payloadGetMusic = new JSONObject();
+
       c.setLogin(testAgent.getIdentifier(), testPass);
-      ClientResponse result = c.sendRequest("GET", mainPath + "/get/", payloadGetMusic.toJSONString(),
-        MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON, new HashMap<String,String>());
+      ClientResponse result = c.sendRequest("GET", mainPath + "/get/", "",
+        MediaType.TEXT_PLAIN, MediaType.APPLICATION_JSON, new HashMap<String,String>());
       assertTrue(true); // change here
       System.out.println("Result of 'testgetMusic': " + result.getResponse().trim());
     } catch (Exception e) {

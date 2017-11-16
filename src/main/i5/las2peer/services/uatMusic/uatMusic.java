@@ -122,7 +122,7 @@ public class uatMusic extends RESTService {
    * getMusic
    *
    * 
-   * @param payloadGetMusic payload get music a JSONObject
+   *
    * 
    * @return Response Response get music
    * 
@@ -135,7 +135,7 @@ public class uatMusic extends RESTService {
        @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "Response get music")
   })
   @ApiOperation(value = "getMusic", notes = "$HTTP_Method_Description$")
-  public Response getMusic(classes.imageMusic payloadGetMusic) {
+  public Response getMusic() {
     Serializable serviceCallParameter = null;
 
     try {
