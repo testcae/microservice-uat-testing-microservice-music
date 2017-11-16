@@ -1,6 +1,6 @@
 package i5.las2peer.services.uatMusic;
 
-
+import java.io.Serializable;
 import java.net.HttpURLConnection;
 
 import javax.ws.rs.DELETE;
@@ -42,7 +42,7 @@ import org.json.simple.*;
  * outsourced to (imported) classes.
  *
  */
-@ServicePath("")
+@ServicePath("musicapp")
 @ManualDeployment
 public class uatMusic extends RESTService {
 
@@ -77,9 +77,9 @@ public class uatMusic extends RESTService {
 
   @Api
   @SwaggerDefinition(
-      info = @Info(title = "uat-testing-microservice-music", version = "$Metadata_Version$",
-          description = "$Metadata_Description$",
-          termsOfService = "$Metadata_Terms$",
+      info = @Info(title = "uat-testing-microservice-music", version = "1",
+          description = "Microservice for music for UAT testing",
+          termsOfService = "LICENSE.txt",
           contact = @Contact(name = "Melisa Cecilia", email = "CAEAddress@gmail.com") ,
           license = @License(name = "BSD",
               url = "https://github.com/testcae/microservice-uat-testing-microservice-music/blob/master/LICENSE.txt") ) )
@@ -88,7 +88,72 @@ public class uatMusic extends RESTService {
 
     private final uatMusic service = (uatMusic) Context.getCurrent().getService();
 
-    
+      /**
+   * 
+   * postMusic
+   *
+   * 
+   * @param payloadPostMusic payload post music a JSONObject
+   * 
+   * @return Response response post image
+   * 
+   */
+  @POST
+  @Path("/post/")
+  @Produces(MediaType.APPLICATION_JSON)
+  @Consumes(MediaType.TEXT_PLAIN)
+  @ApiResponses(value = {
+       @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "response post image")
+  })
+  @ApiOperation(value = "postMusic", notes = "$HTTP_Method_Description$")
+  public Response postMusic(classes.imageMusic payloadPostMusic) {
+
+    // responsePostImage
+    boolean responsePostImage_condition = true;
+    if(responsePostImage_condition) {
+      JSONObject resultPostImage = new classes().new imageMusic().toJSON();
+      return Response.status(HttpURLConnection.HTTP_OK).entity(resultPostImage.toJSONString()).build();
+    }
+    return null;
+  }
+
+  /**
+   * 
+   * getMusic
+   *
+   * 
+   * @param payloadGetMusic payload get music a JSONObject
+   * 
+   * @return Response Response get music
+   * 
+   */
+  @GET
+  @Path("/get/")
+  @Produces(MediaType.APPLICATION_JSON)
+  @Consumes(MediaType.TEXT_PLAIN)
+  @ApiResponses(value = {
+       @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "Response get music")
+  })
+  @ApiOperation(value = "getMusic", notes = "$HTTP_Method_Description$")
+  public Response getMusic(classes.imageMusic payloadGetMusic) {
+    Serializable serviceCallParameter = null;
+
+    try {
+      Object serviceCallReturn = Context.getCurrent().invoke(
+          "serviceClass", "serviceMethodName", serviceCallParameter);
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    // responseGetMusic
+    boolean responseGetMusic_condition = true;
+    if(responseGetMusic_condition) {
+      JSONObject resultGetMusic = new classes().new imageMusic().toJSON();
+      return Response.status(HttpURLConnection.HTTP_OK).entity(resultGetMusic.toJSONString()).build();
+    }
+    return null;
+  }
+
+
 
   }
 

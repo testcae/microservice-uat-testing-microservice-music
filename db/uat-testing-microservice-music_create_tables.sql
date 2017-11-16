@@ -7,9 +7,11 @@
 -- Table structure for table tblMusic.
 --
 CREATE TABLE uatTest.tblMusic (
+  musicId INT(11) ,
   musicUrl VARCHAR(255) ,
+  imageId INT(11) ,
   musicName VARCHAR(255) ,
-CONSTRAINT musicName_PK PRIMARY KEY (musicName)
+CONSTRAINT musicId_PK PRIMARY KEY (musicId)
  
 );
 

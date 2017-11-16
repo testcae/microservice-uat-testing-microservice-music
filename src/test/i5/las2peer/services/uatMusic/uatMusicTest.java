@@ -50,7 +50,7 @@ public class uatMusicTest {
   // version does not matter in tests
   private static final ServiceNameVersion testTemplateService = new ServiceNameVersion(uatMusic.class.getCanonicalName(),"0.1");
 
-  private static final String mainPath = "";
+  private static final String mainPath = "musicapp";
 
 
   /**
@@ -89,6 +89,50 @@ public class uatMusicTest {
      
   }
 
+
+  /**
+   * 
+   * Test for the postMusic method.
+   * 
+   */
+  @Test
+  public void testpostMusic() {
+    MiniClient c = new MiniClient();
+    c.setAddressPort(HTTP_ADDRESS, HTTP_PORT);
+    try {
+      JSONObject payloadPostMusic = new JSONObject();
+      c.setLogin(testAgent.getIdentifier(), testPass);
+      ClientResponse result = c.sendRequest("POST", mainPath + "/post/", payloadPostMusic.toJSONString(),
+        MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON, new HashMap<String,String>());
+      assertTrue(true); // change here
+      System.out.println("Result of 'testpostMusic': " + result.getResponse().trim());
+    } catch (Exception e) {
+      e.printStackTrace();
+      fail("Exception: " + e);
+    }
+  }
+
+  /**
+   * 
+   * Test for the getMusic method.
+   * 
+   */
+  @Test
+  public void testgetMusic() {
+    MiniClient c = new MiniClient();
+    c.setAddressPort(HTTP_ADDRESS, HTTP_PORT);
+    try {
+      JSONObject payloadGetMusic = new JSONObject();
+      c.setLogin(testAgent.getIdentifier(), testPass);
+      ClientResponse result = c.sendRequest("GET", mainPath + "/get/", payloadGetMusic.toJSONString(),
+        MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON, new HashMap<String,String>());
+      assertTrue(true); // change here
+      System.out.println("Result of 'testgetMusic': " + result.getResponse().trim());
+    } catch (Exception e) {
+      e.printStackTrace();
+      fail("Exception: " + e);
+    }
+  }
 
 
 
