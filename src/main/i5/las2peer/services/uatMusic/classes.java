@@ -5,10 +5,28 @@ import org.json.simple.*;
 
 public class classes {
 
-    class music {
+    class imageMusic {
 
-    public music() {}
+    public imageMusic() {}
     
+    private String imageName;
+
+    public void setimageName(String setValue) {
+        this.imageName = setValue;
+    }
+
+    public String getimageName() {
+        return this.imageName;
+    }
+    private String imageUrl;
+
+    public void setimageUrl(String setValue) {
+        this.imageUrl = setValue;
+    }
+
+    public String getimageUrl() {
+        return this.imageUrl;
+    }
     private String musicName;
 
     public void setmusicName(String setValue) {
@@ -17,15 +35,6 @@ public class classes {
 
     public String getmusicName() {
         return this.musicName;
-    }
-    private int musicId;
-
-    public void setmusicId(int setValue) {
-        this.musicId = setValue;
-    }
-
-    public int getmusicId() {
-        return this.musicId;
     }
     private String musicUrl;
 
@@ -40,8 +49,9 @@ public class classes {
     public JSONObject toJSON() {
 
         JSONObject jo = new JSONObject();
+        jo.put("imageName", this.imageName); 
+        jo.put("imageUrl", this.imageUrl); 
         jo.put("musicName", this.musicName); 
-        jo.put("musicId", this.musicId); 
         jo.put("musicUrl", this.musicUrl); 
 
         return jo;
@@ -91,28 +101,10 @@ public class classes {
     }
 
 }
-    class imageMusic {
+    class music {
 
-    public imageMusic() {}
+    public music() {}
     
-    private String imageName;
-
-    public void setimageName(String setValue) {
-        this.imageName = setValue;
-    }
-
-    public String getimageName() {
-        return this.imageName;
-    }
-    private String imageUrl;
-
-    public void setimageUrl(String setValue) {
-        this.imageUrl = setValue;
-    }
-
-    public String getimageUrl() {
-        return this.imageUrl;
-    }
     private String musicName;
 
     public void setmusicName(String setValue) {
@@ -121,6 +113,15 @@ public class classes {
 
     public String getmusicName() {
         return this.musicName;
+    }
+    private int musicId;
+
+    public void setmusicId(int setValue) {
+        this.musicId = setValue;
+    }
+
+    public int getmusicId() {
+        return this.musicId;
     }
     private String musicUrl;
 
@@ -135,9 +136,8 @@ public class classes {
     public JSONObject toJSON() {
 
         JSONObject jo = new JSONObject();
-        jo.put("imageName", this.imageName); 
-        jo.put("imageUrl", this.imageUrl); 
         jo.put("musicName", this.musicName); 
+        jo.put("musicId", this.musicId); 
         jo.put("musicUrl", this.musicUrl); 
 
         return jo;
