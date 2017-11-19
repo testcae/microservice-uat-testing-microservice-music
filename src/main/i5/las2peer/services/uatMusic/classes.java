@@ -37,6 +37,13 @@ public class classes {
         return jo;
     }
 
+    public void fromJSON(String jsonString) throws ParseException {
+        JSONObject jsonObject = (JSONObject) JSONValue.parseWithException(jsonString);
+        this.imageName = (String) jsonObject.get("imageName"); 
+        this.imageUrl = (String) jsonObject.get("imageUrl"); 
+
+    }
+
 }
     class music {
 
@@ -80,6 +87,14 @@ public class classes {
         return jo;
     }
 
+    public void fromJSON(String jsonString) throws ParseException {
+        JSONObject jsonObject = (JSONObject) JSONValue.parseWithException(jsonString);
+        this.musicName = (String) jsonObject.get("musicName"); 
+        this.musicId = ((Long) jsonObject.get("musicId")).intValue(); 
+        this.musicUrl = (String) jsonObject.get("musicUrl"); 
+
+    }
+
 }
     class imageMusic {
 
@@ -111,6 +126,13 @@ public class classes {
         jo.put("imageUrl", this.imageUrl); 
 
         return jo;
+    }
+
+    public void fromJSON(String jsonString) throws ParseException {
+        JSONObject jsonObject = (JSONObject) JSONValue.parseWithException(jsonString);
+        this.imageName = (String) jsonObject.get("imageName"); 
+        this.imageUrl = (String) jsonObject.get("imageUrl"); 
+
     }
 
 }

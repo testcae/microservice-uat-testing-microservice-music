@@ -1,6 +1,6 @@
 package i5.las2peer.services.uatMusic;
 
-
+import java.io.Serializable;
 import java.net.HttpURLConnection;
 
 import javax.ws.rs.DELETE;
@@ -106,8 +106,22 @@ public class uatMusic extends RESTService {
        @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "response post image")
   })
   @ApiOperation(value = "postMusic", notes = "$HTTP_Method_Description$")
-  public Response postMusic(classes.imageMusic payloadPostMusic) {
+  public Response postMusic(String payloadPostMusic) {
+   classes.imageMusic payloadpayloadPostMusicObject = new classes().new imageMusic();
+   try { 
+       payloadpayloadPostMusicObject.fromJSON(payloadPostMusic);
+   } catch (Exception e) { 
+       e.printStackTrace();
+       JSONObject result = new JSONObject();
+       return Response.status(HttpURLConnection.HTTP_INTERNAL_ERROR).entity("Cannot convert json to object").build();
+   }    Serializable postImageParameter = null;
 
+    try {
+      Object returnServicePostImage = Context.getCurrent().invoke(
+          "uat-testing-microservice-image", "postImage", postImageParameter);
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
     // responsePostImage
     boolean responsePostImage_condition = true;
     if(responsePostImage_condition) {
@@ -137,6 +151,12 @@ public class uatMusic extends RESTService {
   @ApiOperation(value = "getMusic", notes = "$HTTP_Method_Description$")
   public Response getMusic() {
 
+    try {
+      Object returnServiceGetImage = Context.getCurrent().invoke(
+          "uat-testing-microservice-image", "getImage");
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
     // responseGetMusic
     boolean responseGetMusic_condition = true;
     if(responseGetMusic_condition) {
