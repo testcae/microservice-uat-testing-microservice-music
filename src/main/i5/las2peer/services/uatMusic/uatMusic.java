@@ -30,7 +30,12 @@ import io.swagger.annotations.Info;
 import io.swagger.annotations.License;
 import io.swagger.annotations.SwaggerDefinition;
 import org.json.simple.*;
- 
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Iterator;
 
 /**
  *
@@ -113,22 +118,43 @@ public class uatMusic extends RESTService {
    } catch (Exception e) { 
        e.printStackTrace();
        JSONObject result = new JSONObject();
-       return Response.status(HttpURLConnection.HTTP_INTERNAL_ERROR).entity("Cannot convert json to object").build();
-   }    Serializable postImageParameter = null;
+       return Response.status(HttpURLConnection.HTTP_INTERNAL_ERROR).entity(0).build();
+   }   
+   
+   // get image object to pass to music service
+   classes.image imageObject = new classes().new image();
+   imageObject.setimageId(0);
+   imageObject.setimageName(payloadpayloadPostMusicObject.getimageName());
+   imageObject.setimageUrl(payloadpayloadPostMusicObject.getimageUrl());
+
+   Serializable postImageParameter = imageObject.toJSON();
 
     try {
       Object returnServicePostImage = Context.getCurrent().invoke(
-          "uat-testing-microservice-image", "postImage", postImageParameter);
+          "uatTestImage", "postImage", postImageParameter);
+      int imageId = (int) returnServicePostImage;
+
+      // now process music object
+      Connection conn = service.dbm.getConnection();
+      PreparedStatement query = conn.prepareStatement(
+        "INSERT INTO uatTest.tblMusic(musicName, musicUrl, imageId) VALUES(?,?,?) ");
+      query.setString(1, payloadpayloadPostMusicObject.getmusicName());
+      query.setString(2, payloadpayloadPostMusicObject.getmusicUrl());
+      query.setInt(3, imageId);
+      query.executeUpdate();
+
+      // get id of the new added image
+      ResultSet generatedKeys = query.getGeneratedKeys();
+      if (generatedKeys.next()) {
+        return Response.status(HttpURLConnection.HTTP_OK).entity(generatedKeys.getLong(1)).build();
+      } else {
+        return Response.status(HttpURLConnection.HTTP_OK).entity(0).build();
+      }
+
     } catch (Exception e) {
         e.printStackTrace();
+        return Response.status(HttpURLConnection.HTTP_INTERNAL_ERROR).entity(0).build();
     }
-    // responsePostImage
-    boolean responsePostImage_condition = true;
-    if(responsePostImage_condition) {
-      JSONObject resultPostImage = new classes().new imageMusic().toJSON();
-      return Response.status(HttpURLConnection.HTTP_OK).entity(resultPostImage.toJSONString()).build();
-    }
-    return null;
   }
 
   /**
@@ -153,17 +179,58 @@ public class uatMusic extends RESTService {
 
     try {
       Object returnServiceGetImage = Context.getCurrent().invoke(
-          "uat-testing-microservice-image", "getImage");
+          "uatTestImage", "getImage");
+      HashMap<Integer, classes.image> imageMap = new HashMap<Integer, classes.image>();
+      // put into array
+      JSONParser parser = new JSONParser();
+      JSONArray jsonArray = (JSONArray)parser.parse((String) returnServiceGetImage);
+      Iterator i = jsonArray.iterator();
+
+      // put into map of id and image object
+      while (i.hasNext())
+      {
+          JSONObject jsonObj = (JSONObject) i.next();
+          classes.image imageObj = new classes().new image();
+          imageObj.fromJSON(jsonObj.toJSONString());
+          imageMap.put(imageObj.getimageId(), imageObj);
+          System.out.println(jsonObj);
+      }
+
+      // now process from music database
+      Connection conn = service.dbm.getConnection();
+      PreparedStatement query = conn.prepareStatement("SELECT * FROM uatTest.tblMusic");
+      ResultSet result = query.executeQuery();
+
+      JSONArray jsonResult = new JSONArray();
+      while(result.next()) {
+        
+        // music object
+        classes.music musicResult = new classes().new music();
+        musicResult.setmusicName(result.getString("musicName"));
+        musicResult.setmusicUrl(result.getString("musicUrl"));
+        musicResult.setmusicId(result.getInt("musicId"));
+        musicResult.setimageId(result.getInt("imageId"));
+
+        // music + image
+        classes.image imageResult = imageMap.get(musicResult.getimageId());
+        classes.imageMusic imageMusicResult = new classes().new imageMusic();
+
+        if(imageResult != null) {
+          imageMusicResult.setimageName(imageResult.getimageName());
+          imageMusicResult.setimageUrl(imageResult.getimageUrl());
+        }
+        imageMusicResult.setmusicName(musicResult.getmusicName());
+        imageMusicResult.setmusicUrl(musicResult.getmusicUrl());
+
+        jsonResult.add(imageMusicResult.toJSON());
+      }
+      // responseGetMusic
+      return Response.status(HttpURLConnection.HTTP_OK).entity(jsonResult.toJSONString()).build();
     } catch (Exception e) {
-        e.printStackTrace();
+      e.printStackTrace();
+      JSONObject result = new JSONObject(); 
+      return Response.status(HttpURLConnection.HTTP_INTERNAL_ERROR).entity(result.toJSONString()).build();
     }
-    // responseGetMusic
-    boolean responseGetMusic_condition = true;
-    if(responseGetMusic_condition) {
-      JSONObject resultGetMusic = new classes().new imageMusic().toJSON();
-      return Response.status(HttpURLConnection.HTTP_OK).entity(resultGetMusic.toJSONString()).build();
-    }
-    return null;
   }
 
 
