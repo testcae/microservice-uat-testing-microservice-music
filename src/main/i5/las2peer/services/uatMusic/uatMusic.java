@@ -131,7 +131,7 @@ public class uatMusic extends RESTService {
 
     try {
       Object returnServicePostImage = Context.getCurrent().invoke(
-          "uatTestImage", "postImage", postImageParameter);
+          "uatTestImage", "postImage", new Serializable[]{postImageParameter});
       int imageId = (int) returnServicePostImage;
 
       // now process music object
@@ -179,7 +179,7 @@ public class uatMusic extends RESTService {
 
     try {
       Object returnServiceGetImage = Context.getCurrent().invoke(
-          "uatTestImage", "getImage");
+          "uatTestImage", "getImage", new Serializable[]{});
       HashMap<Integer, classes.image> imageMap = new HashMap<Integer, classes.image>();
       // put into array
       JSONParser parser = new JSONParser();
