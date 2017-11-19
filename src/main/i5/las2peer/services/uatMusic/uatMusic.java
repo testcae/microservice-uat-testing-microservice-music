@@ -1,6 +1,6 @@
 package i5.las2peer.services.uatMusic;
 
-import java.io.Serializable;
+
 import java.net.HttpURLConnection;
 
 import javax.ws.rs.DELETE;
@@ -77,8 +77,8 @@ public class uatMusic extends RESTService {
 
   @Api
   @SwaggerDefinition(
-      info = @Info(title = "uat-testing-microservice-music", version = "1",
-          description = "Microservice for music for UAT testing",
+      info = @Info(title = "uat-testing-microservice-music", version = "1.0",
+          description = "Microservice for music service",
           termsOfService = "LICENSE.txt",
           contact = @Contact(name = "Melisa Cecilia", email = "CAEAddress@gmail.com") ,
           license = @License(name = "BSD",
@@ -136,14 +136,7 @@ public class uatMusic extends RESTService {
   })
   @ApiOperation(value = "getMusic", notes = "$HTTP_Method_Description$")
   public Response getMusic() {
-    Serializable serviceCallParameter = null;
 
-    try {
-      Object serviceCallReturn = Context.getCurrent().invoke(
-          "serviceClass", "serviceMethodName", serviceCallParameter);
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
     // responseGetMusic
     boolean responseGetMusic_condition = true;
     if(responseGetMusic_condition) {
