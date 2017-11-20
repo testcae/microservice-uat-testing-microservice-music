@@ -127,11 +127,11 @@ public class uatMusic extends RESTService {
    imageObject.setimageName(payloadpayloadPostMusicObject.getimageName());
    imageObject.setimageUrl(payloadpayloadPostMusicObject.getimageUrl());
 
-   Serializable postImageParameter = imageObject.toJSON();
+   Serializable postImageParameter = imageObject.toJSON().toJSONString();
 
     try {
       Object returnServicePostImage = Context.getCurrent().invoke(
-          "i5.las2peer.services.uatTestImage.uatTestImage", "postImage", new Serializable[]{postImageParameter});
+          "i5.las2peer.services.uatTestImage.uatTestImage@1.0", "postImage", postImageParameter);
       int imageId = (int) returnServicePostImage;
 
       // now process music object
@@ -179,7 +179,7 @@ public class uatMusic extends RESTService {
 
     try {
       Object returnServiceGetImage = Context.getCurrent().invoke(
-          "i5.las2peer.services.uatTestImage.uatTestImage", "getImage", new Serializable[]{});
+          "i5.las2peer.services.uatTestImage.uatTestImage@1.0", "getImage");
       HashMap<Integer, classes.image> imageMap = new HashMap<Integer, classes.image>();
       // put into array
       JSONParser parser = new JSONParser();
